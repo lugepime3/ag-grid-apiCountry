@@ -443,6 +443,7 @@ export class CountryService {
 --------------------------------------
 7-Editar Componente  .(country-board.component.ts)
 --------------------------------------
+
 import { Component, OnInit } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
@@ -476,12 +477,19 @@ export class CountryBoardComponent implements OnInit {
   private gridColumnApi:any;
   
   private rowData: any;
+  
   //--------------------------------------
+  
   constructor(private http: HttpClient,private router: Router) {}
+  
  //--------------------------------------
+ 
  /**
+ 
   * Define las columnas  
+  
   */
+  
 ngOnInit() {
 
   this.columnDefs = [
@@ -526,7 +534,9 @@ onGridReady(params){
 
 
 //-------------------------------
+
 //Manage the crud
+
 onCellClicked(event: any) { 
 
   var navigate = 0;
@@ -573,9 +583,11 @@ onCellClicked(event: any) {
 //-------------------------------
 
 }//fc
+
 --------------------------------------
 8-Editar .(country-board.component.html)
 --------------------------------------
+
 <!-- template: paginator and properties -->
 
 
