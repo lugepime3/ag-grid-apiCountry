@@ -619,8 +619,11 @@ onCellClicked(event: any) {
 
 
 --------------------------------------
+
 9-Editar Componente  .(country-form.component.ts)
+
 --------------------------------------
+
 
 import { Component, OnInit } from '@angular/core';
 
@@ -642,7 +645,9 @@ import  { CountryService } from 'src/app/service/country.service';
   styleUrls: ['./country-form.component.css']
   
 })
+
 //-----------------------------
+
 export class CountryFormComponent implements OnInit {
 
 title:string;
@@ -653,7 +658,9 @@ callingcode:string;
 
 
   constructor(private countryService: CountryService,private http: HttpClient,private activatedRoute: ActivatedRoute) { }
+  
 //-------------------------------------------------------------
+
 ngOnInit() {
 
   this.title="Countries";
@@ -690,6 +697,7 @@ ngOnInit() {
 <form>
   
 <!--Esperar a que el recurso este cargado por completo para mostrar la pagina -->
+
 <div *ngIf="country!=null; else espera">
 
       <ng-template #espera>Esperando datos...</ng-template>
