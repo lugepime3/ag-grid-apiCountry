@@ -1,0 +1,23 @@
+<!-- template: paginator and properties -->
+
+
+<div align="center">
+    <h3>{{title}}</h3>
+</div>
+
+<div class="container">
+    <ag-grid-angular
+        style="width: 1000px; height: 500px; padding-top:10px"
+        class="ag-theme-alpine"
+        [rowData]="rowData | async"
+        [columnDefs]="columnDefs"
+        [animateRows]="true"
+        [pagination]="true"
+        [rowDragManaged]="true"
+        [rowSelection]= "single"
+        [gridOptions]="gridOptions"
+        (gridReady)="onGridReady($event)"   
+        (cellClicked)='onCellClicked($event)'  
+    >
+    </ag-grid-angular>
+</div>

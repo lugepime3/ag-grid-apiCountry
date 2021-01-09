@@ -1,0 +1,36 @@
+<!--Formulario de Detalle -->
+<div align="center">
+  <h3>{{title}}</h3>
+</div>
+
+<form>
+<!--Esperar a que el recurso este cargado por completo para mostrar la pagina -->
+<div *ngIf="country!=null; else espera">
+      <ng-template #espera>Esperando datos...</ng-template>
+</div>
+
+<div class="container">
+
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input type="text" [(ngModel)]="country.name" name="name" class="form-control" readonly="readonly">    
+  </div>
+  
+  <div class="form-group">
+    <label for="capital">Capital</label>
+    <input type="text" [(ngModel)]="country.capital" name="capital" class="form-control" readonly="readonly">    
+  </div>
+
+  <div class="form-group">
+    <label for="region">Region</label>
+    <input type="text" [(ngModel)]="country.region" name="region" class="form-control" readonly="readonly">    
+  </div>
+
+  <div class="form-group">
+    <label for="subregion">Sub-Region</label>
+    <input type="text" [(ngModel)]="country.subregion" name="region" class="form-control" readonly="readonly">    
+  </div>
+
+</div>
+
+</form>
