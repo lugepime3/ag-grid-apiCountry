@@ -302,56 +302,94 @@ C:\apiRestCountries>ng g c country/countryForm --flat
 5-Agregar rutas de componentes (app-routing.module) 
 --------------------------------------
 import { NgModule } from '@angular/core';
+
 import { Routes, RouterModule } from '@angular/router';
+
 //Componentes
+
 import { CountryBoardComponent } from './country/country-board/country-board.component';
+
 import { CountryFormComponent } from './country/countryForm/country-form.component';
 
 const routes: Routes = [
+
   {
+  
     path:'country',
+    
     component:CountryBoardComponent
+    
   },
+  
   {
+    
     path:'country/detail/:id',
+    
     component:CountryFormComponent
+    
   },
 
 ];
 
+
 @NgModule({
+
   imports: [RouterModule.forRoot(routes)],
+  
   exports: [RouterModule]
+  
 })
+
 export class AppRoutingModule { }
 
 --------------------------------------
 6-Agregar en el modulo.(src/app/app.module.ts)
 --------------------------------------
 import { BrowserModule } from '@angular/platform-browser';
+
 import { NgModule } from '@angular/core';
+
 import { AppRoutingModule } from './app-routing.module';
+
 import { AppComponent } from './app.component';
+
 import { HttpClientModule } from '@angular/common/http';
+
 //new components:
+
 import { AgGridModule } from 'ag-grid-angular';
 
 
 @NgModule({
+
   declarations: [
+  
     AppComponent
+    
   ],
+  
   imports: [
+  
     BrowserModule,
+    
     AppRoutingModule,
+    
     HttpClientModule,
+    
     //new components:
+    
     AgGridModule.withComponents([])
+    
   ],
+  
   providers: [],
+  
   bootstrap: [AppComponent]
+  
 })
+
 export class AppModule { }
+
 
 --------------------------------------
 7.0 Crear Servicio 
@@ -362,25 +400,39 @@ C:\apiRestCountries>ng g s service/country
 7.1 Desarrollar Servicio 
 --------------------------------------
 import { Injectable } from '@angular/core';
+
 import { HttpClient } from '@angular/common/http';
+
 import { Country } from 'src/app/country/Country';
+
 import { Observable, throwError} from 'rxjs';
+
 import { catchError } from 'rxjs/operators';
 
 @Injectable({
+
   providedIn: 'root'
+  
 })
+
 export class CountryService {
 
   constructor(private http: HttpClient) { }
 
   findOne(id:string):Observable< Country >{
+  
     return  this.http.get<Country>(`https://restcountries.eu/rest/v2/callingcode/${id}`)
+    
     .pipe(catchError(e=>{
+    
       console.log(e.error.mensaje);
+      
       return throwError(e)
+      
     })
+    
     );
+    
   }
 
 
@@ -390,23 +442,37 @@ export class CountryService {
 7-Editar Componente  .(country-board.component.ts)
 --------------------------------------
 import { Component, OnInit } from '@angular/core';
+
 import { HttpClient } from '@angular/common/http';
+
 import { localeEs } from 'src/assets/locale.es.js';
+
 import {Router} from '@angular/router';
 
 
 @Component({
+
   selector: 'app-country-board',
+  
   templateUrl: './country-board.component.html',
+  
   styleUrls: ['./country-board.component.css']
+  
 })
 export class CountryBoardComponent implements OnInit {
+
   // Attributos del grid 
+  
   title = 'agGrid - Country';
+  
   private gridOptions = {};
+  
   private columnDefs;
+  
   private gridApi:any;
+  
   private gridColumnApi:any;
+  
   private rowData: any;
   //--------------------------------------
   constructor(private http: HttpClient,private router: Router) {}
@@ -415,7 +481,9 @@ export class CountryBoardComponent implements OnInit {
   * Define las columnas  
   */
 ngOnInit() {
+
   this.columnDefs = [
+  
     { headerName: 'detail', field: 'callingCodes',width:150,
       cellRenderer: ($event) =>
             `<img src="assets/view.png" alt="View" width="50%" height="50%">`,
@@ -425,52 +493,81 @@ ngOnInit() {
     { headerName: 'Call Code',field: 'callingCodes', sortable: true, filter: true ,width:200, resizable: true },
     { headerName: 'Region',field: 'region', sortable: true, filter: true ,width:200, resizable: true },
 ];
+    
     // Special properties here, like localization, 
     this.gridOptions = {
       localeTextFunc: (key: string, defaultValue: string) => localeEs[key] || defaultValue
    }
 }
+
 //-------------------------------
+
 //load data from service
+
 onGridReady(params){
+
   this.gridApi=params.api;
+  
   this.gridColumnApi=params.columnApi;
+  
   this.http
+  
   .get('https://restcountries.eu/rest/v2/all')
+  
   .subscribe(data=>{
+  
     params.api.setRowData(data);
+    
   })
+  
 }
 
 
 //-------------------------------
 //Manage the crud
 onCellClicked(event: any) { 
+
   var navigate = 0;
+  
   var urlRedirect='/country/';
+  
   console.log('cell', event); 
+  
   console.log('cell Operation: ', event.colDef.headerName); 
+  
   console.log('cell Value: ', event.value); 
 
   if(event.colDef.headerName=='detail'){
+  
     urlRedirect=urlRedirect +'detail/'+event.value;
+    
     navigate =1;
+    
   }
     
   if(event.colDef.headerName=='update'){
+  
     urlRedirect=urlRedirect +'update/'+event.value;
+    
     navigate =1;
+    
   }
       
   if(event.colDef.headerName=='delete'){
+  
     urlRedirect=urlRedirect +'delete/'+event.value;
+    
     navigate =1;
+    
   }
     
   if(navigate>0)
+  
     this.router.navigate([urlRedirect]); 
+    
    /* */
                           }
+                          
 //-------------------------------
 
 }//fc
@@ -481,11 +578,15 @@ onCellClicked(event: any) {
 
 
 <div align="center">
+  
     <h3>{{title}}</h3>
+    
 </div>
 
 <div class="container">
+  
     <ag-grid-angular
+    
         style="width: 1000px; height: 500px; padding-top:10px"
         class="ag-theme-alpine"
         [rowData]="rowData | async"
@@ -499,6 +600,7 @@ onCellClicked(event: any) {
         (cellClicked)='onCellClicked($event)'  
     >
     </ag-grid-angular>
+    
 </div>
 
 
@@ -506,71 +608,109 @@ onCellClicked(event: any) {
 9-Editar Componente  .(country-form.component.ts)
 --------------------------------------
 import { Component, OnInit } from '@angular/core';
+
 import { HttpClient } from '@angular/common/http';
+
 import { ActivatedRoute, Params } from '@angular/router';
+
 import { Country } from 'src/app/country/Country';
+
 import  { CountryService } from 'src/app/service/country.service';
 
+
 @Component({
+
   selector: 'app-country-form',
+  
   templateUrl: './country-form.component.html',
+  
   styleUrls: ['./country-form.component.css']
+  
 })
 //-----------------------------
 export class CountryFormComponent implements OnInit {
-title:string;  
+
+title:string;
+
 country:Country;
+
 callingcode:string;
+
 
   constructor(private countryService: CountryService,private http: HttpClient,private activatedRoute: ActivatedRoute) { }
 //-------------------------------------------------------------
 ngOnInit() {
+
   this.title="Countries";
+  
   this.callingcode = this.activatedRoute.snapshot.params.id;
+  
   this.countryService.findOne(this.callingcode).subscribe(
+  
     function (response) {
        this.country = response[0];
     }.bind(this)
+    
   );
+  
 }
 
 
 //--------------------------------------------------------------
+
 }//fc 
 --------------------------------------
 10-Editar Componente  .(country-form.component.html)
 --------------------------------------
 <!--Formulario de Detalle -->
+
 <div align="center">
+  
   <h3>{{title}}</h3>
+  
 </div>
 
 <form>
+  
 <!--Esperar a que el recurso este cargado por completo para mostrar la pagina -->
 <div *ngIf="country!=null; else espera">
+
       <ng-template #espera>Esperando datos...</ng-template>
+      
 </div>
 
 <div class="container">
 
   <div class="form-group">
+  
     <label for="name">Name</label>
-    <input type="text" [(ngModel)]="country.name" name="name" class="form-control" readonly="readonly">    
+    
+    <input type="text" [(ngModel)]="country.name" name="name" class="form-control" readonly="readonly">
+    
   </div>
   
   <div class="form-group">
+  
     <label for="capital">Capital</label>
-    <input type="text" [(ngModel)]="country.capital" name="capital" class="form-control" readonly="readonly">    
+    
+    <input type="text" [(ngModel)]="country.capital" name="capital" class="form-control" readonly="readonly">  
+    
   </div>
 
   <div class="form-group">
+  
     <label for="region">Region</label>
-    <input type="text" [(ngModel)]="country.region" name="region" class="form-control" readonly="readonly">    
+    
+    <input type="text" [(ngModel)]="country.region" name="region" class="form-control" readonly="readonly">
+    
   </div>
 
   <div class="form-group">
+  
     <label for="subregion">Sub-Region</label>
-    <input type="text" [(ngModel)]="country.subregion" name="region" class="form-control" readonly="readonly">    
+    
+    <input type="text" [(ngModel)]="country.subregion" name="region" class="form-control" readonly="readonly"> 
+    
   </div>
 
 </div>
@@ -580,36 +720,54 @@ ngOnInit() {
 11-verificar app.module
 --------------------------------------
 import { BrowserModule } from '@angular/platform-browser';
+
 import { NgModule } from '@angular/core';
+
 import { AppRoutingModule } from './app-routing.module';
+
 import { AppComponent } from './app.component';
+
 import { HttpClientModule } from '@angular/common/http';
 
+
 //new components:
+
 import { AgGridModule } from 'ag-grid-angular';
+
 import { CountryBoardComponent } from './country/country-board/country-board.component';
+
 import { CountryFormComponent } from './country/countryForm/country-form.component';
+
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
+
   declarations: [
+  
     AppComponent,
     CountryBoardComponent,
     CountryFormComponent,
    
   ],
+  
   imports: [
+  
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     //new components:
     AgGridModule.withComponents([]),
     FormsModule
+    
   ],
   providers: [],
+  
   bootstrap: [AppComponent]
+  
 })
+
 export class AppModule { }
+
 --------------------------------------
 HITO -Probar 
 --------------------------------------
