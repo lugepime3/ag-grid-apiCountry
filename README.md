@@ -28,6 +28,7 @@ npm install bootstrap jquery @popperjs/core
 --------------------------------------
 
  "styles": [
+ 
               "./node_modules/ag-grid-community/dist/styles/ag-grid.css",
               "./node_modules/ag-grid-community/dist/styles/ag-theme-alpine-dark.css",
               "./node_modules/ag-grid-community/dist/styles/ag-theme-alpine.css",
