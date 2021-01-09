@@ -26,6 +26,7 @@ npm install bootstrap jquery @popperjs/core
 --------------------------------------
 3.1-Agregar styles bootstrap  y ag-grid .(angular.json)
 --------------------------------------
+
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css"
@@ -38,6 +39,7 @@ npm install bootstrap jquery @popperjs/core
 --------------------------------------
 3.2-Cambiar Idioma  .(assets -> crear locale.es.js y adicionar este contenido)
 --------------------------------------
+
 export const localeEs = {
     selectAll: 'Seleccionar todo',
     selectAllSearchResults: 'Seleccionar todos los resultados de búsqueda',
@@ -607,6 +609,7 @@ onCellClicked(event: any) {
 --------------------------------------
 9-Editar Componente  .(country-form.component.ts)
 --------------------------------------
+
 import { Component, OnInit } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
@@ -659,9 +662,11 @@ ngOnInit() {
 //--------------------------------------------------------------
 
 }//fc 
+
 --------------------------------------
 10-Editar Componente  .(country-form.component.html)
 --------------------------------------
+
 <!--Formulario de Detalle -->
 
 <div align="center">
@@ -719,6 +724,7 @@ ngOnInit() {
 --------------------------------------
 11-verificar app.module
 --------------------------------------
+
 import { BrowserModule } from '@angular/platform-browser';
 
 import { NgModule } from '@angular/core';
@@ -771,6 +777,7 @@ export class AppModule { }
 --------------------------------------
 HITO -Probar 
 --------------------------------------
+
 C:\agGrid:>ng serve -o
 
 
